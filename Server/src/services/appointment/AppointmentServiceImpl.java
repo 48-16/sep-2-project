@@ -6,7 +6,6 @@ import dtos.apointment.GetAppointmentsByDateRequest;
 import model.Appointment;
 import persistance.appointmentDAO.AppointmentDAO;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

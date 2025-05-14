@@ -1,7 +1,6 @@
 package services.revenue;
 
 import dtos.revenue.AddRevenueRequest;
-import model.Revenue;
 import persistance.revenueDAO.RevenueDAO;
 
 public class RevenueServiceImpl implements RevenueService {

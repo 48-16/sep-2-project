@@ -1,7 +1,6 @@
 package ui.login;
 
 import startup.ViewHandler;
-import dtos.user.UserDataDto;
 import dtos.auth.LoginRequest;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
