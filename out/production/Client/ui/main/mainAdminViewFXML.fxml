@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.mainAdminViewControler">
+   <children>
+      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Shop">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView prefHeight="330.0" prefWidth="600.0">
+                          <columns>
+                            <TableColumn prefWidth="376.0" text="Name" />
+                            <TableColumn minWidth="0.0" prefWidth="105.0" text="Quanity at storage" />
+                              <TableColumn fx:id="changingQuintity" prefWidth="117.0" text="Actions" />
+                          </columns>
+                        </TableView>
+                        <Button layoutX="479.0" layoutY="332.0" mnemonicParsing="false" text="add new product" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab text="Barbershop">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <DatePicker fx:id="datePicker" layoutX="41.0" layoutY="171.0" prefHeight="29.0" prefWidth="164.0" />
+                        <Label layoutX="34.0" layoutY="147.0" text="Choose Date for your apointment" />
+                        <Button fx:id="firstHour" layoutX="300.0" layoutY="67.0" mnemonicParsing="false" onAction="#choosefirstHour" text="8:00-9:00" />
+                        <Button fx:id="SecondHour" layoutX="391.0" layoutY="67.0" mnemonicParsing="false" onAction="#chooseSecondHour" text="9:00-10:00" />
+                        <Button fx:id="ThirdHour" layoutX="485.0" layoutY="67.0" mnemonicParsing="false" onAction="#chooseThirdHour" text="10:00-11:00" />
+                        <Button fx:id="FourthHour" layoutX="300.0" layoutY="131.0" mnemonicParsing="false" onAction="#chooseFourthHour" text="11:00-12:00" />
+                        <Button fx:id="FifthHour" layoutX="391.0" layoutY="131.0" mnemonicParsing="false" onAction="#chooseFifthHour" text="12:00-13:00" />
+                        <Button fx:id="SixthHour" layoutX="485.0" layoutY="131.0" mnemonicParsing="false" onAction="#chooseSixthHour" text="13:00-14:00" />
+                        <Button fx:id="SeventhHour" layoutX="300.0" layoutY="186.0" mnemonicParsing="false" onAction="#chooseSeventhHour" text="14:00-15:00" />
+                        <Button fx:id="EightHour" layoutX="391.0" layoutY="186.0" mnemonicParsing="false" onAction="#chooseEightHour" text="15:00-16:00" />
+                        <Button fx:id="CancelApointment" layoutX="453.0" layoutY="297.0" mnemonicParsing="false" onAction="#DeleteApointment" prefHeight="47.0" prefWidth="120.0" text="Cancel apointment" />
+                        <Button fx:id="DeleteTime" layoutX="349.0" layoutY="297.0" mnemonicParsing="false" onAction="#DeleteTime" prefHeight="47.0" prefWidth="106.0" text="Delete time" />
+                        <Button fx:id="DeleteDay" layoutX="252.0" layoutY="297.0" mnemonicParsing="false" onAction="#DeleteDay" prefHeight="47.0" prefWidth="97.0" text="Delete day" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
