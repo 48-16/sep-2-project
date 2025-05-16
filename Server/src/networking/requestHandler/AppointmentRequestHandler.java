@@ -1,9 +1,9 @@
 package networking.requestHandler;
 
 import dtos.Response;
-import dtos.apointment.AppointmentRequest;
-import dtos.apointment.DeleteAppointmentRequest;
-import dtos.apointment.GetAppointmentsByDateRequest;
+import dtos.appointment.AppointmentRequest;
+import dtos.appointment.DeleteAppointmentRequest;
+import dtos.appointment.GetAppointmentsByDateRequest;
 import model.Appointment;
 import services.appointment.AppointmentService;
 

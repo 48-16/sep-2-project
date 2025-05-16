@@ -34,7 +34,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <DatePicker fx:id="datePicker" layoutX="41.0" layoutY="171.0" prefHeight="29.0" prefWidth="164.0" />
-                        <Label layoutX="34.0" layoutY="147.0" text="Choose Date for your apointment" />
+                        <Label layoutX="34.0" layoutY="147.0" text="Choose Date for your appointment" />
                         <Button fx:id="firstHour" layoutX="300.0" layoutY="67.0" mnemonicParsing="false" onAction="#choosefirstHour" text="8:00-9:00" />
                         <Button fx:id="SecondHour" layoutX="391.0" layoutY="67.0" mnemonicParsing="false" onAction="#chooseSecondHour" text="9:00-10:00" />
                         <Button fx:id="ThirdHour" layoutX="485.0" layoutY="67.0" mnemonicParsing="false" onAction="#chooseThirdHour" text="10:00-11:00" />
@@ -43,7 +43,7 @@
                         <Button fx:id="SixthHour" layoutX="485.0" layoutY="131.0" mnemonicParsing="false" onAction="#chooseSixthHour" text="13:00-14:00" />
                         <Button fx:id="SeventhHour" layoutX="300.0" layoutY="186.0" mnemonicParsing="false" onAction="#chooseSeventhHour" text="14:00-15:00" />
                         <Button fx:id="EightHour" layoutX="391.0" layoutY="186.0" mnemonicParsing="false" onAction="#chooseEightHour" text="15:00-16:00" />
-                        <Button fx:id="CancelApointment" layoutX="453.0" layoutY="297.0" mnemonicParsing="false" onAction="#DeleteApointment" prefHeight="47.0" prefWidth="120.0" text="Cancel apointment" />
+                        <Button fx:id="CancelApointment" layoutX="453.0" layoutY="297.0" mnemonicParsing="false" onAction="#DeleteApointment" prefHeight="47.0" prefWidth="120.0" text="Cancel appointment" />
                         <Button fx:id="DeleteTime" layoutX="349.0" layoutY="297.0" mnemonicParsing="false" onAction="#DeleteTime" prefHeight="47.0" prefWidth="106.0" text="Delete time" />
                         <Button fx:id="DeleteDay" layoutX="252.0" layoutY="297.0" mnemonicParsing="false" onAction="#DeleteDay" prefHeight="47.0" prefWidth="97.0" text="Delete day" />
                      </children>

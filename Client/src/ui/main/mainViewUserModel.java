@@ -4,7 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import networking.apointment.appointmentClient;
+import ClientNetworking.appointment.appointmentClient;
 import utils.ErrorPopUp;
 
 import java.time.LocalDate;
@@ -26,8 +26,8 @@ public class mainViewUserModel {
   };
 
   public mainViewUserModel(
-      appointmentClient apointmentService, UserDataDto currentUser) {
-    this.appointmentService = apointmentService;
+      appointmentClient appointmentService, UserDataDto currentUser) {
+    this.appointmentService = appointmentService;
     this.currentUser = currentUser;
 
     for (String slot : TIME_SLOTS) {

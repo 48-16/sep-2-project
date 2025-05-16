@@ -7,7 +7,6 @@ import utils.ErrorPopUp;
 
 import java.util.HashMap;
 import java.util.Map;
-import networking.apointment.appointmentClient;
 
 public class mainAdminViewControler {
     @FXML

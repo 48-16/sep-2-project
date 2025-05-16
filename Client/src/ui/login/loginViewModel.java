@@ -1,14 +1,15 @@
 package ui.login;
 
-import startup.ViewHandler;
+import ClientStartup.ViewHandler;
 import dtos.auth.LoginRequest;
+import dtos.auth.UserDataDto;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import networking.authentication.authenticationClient;
-import startup.ViewType;
+import ClientNetworking.authentication.authenticationClient;
+import ClientStartup.ViewType;
 
 public class loginViewModel
 {
