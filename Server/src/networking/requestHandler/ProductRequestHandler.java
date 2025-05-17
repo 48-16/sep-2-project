@@ -2,7 +2,7 @@ package networking.requestHandler;
 
 import dtos.Response;
 import dtos.product.*;
-import model.Product;
+import dtos.model.Product;
 import services.product.ProductService;
 
 public class ProductRequestHandler implements RequestHandler {

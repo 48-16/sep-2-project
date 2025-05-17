@@ -1,6 +1,6 @@
 package persistance.userDAO;
 
-import model.User;
+import dtos.model.User;
 import persistance.PostgresConnection;
 
 import java.security.MessageDigest;
@@ -121,7 +121,7 @@ public class UserDAOImpl implements UserDao {
         User user = new User();
         user.setId(resultSet.getInt("id"));
         user.setUserName(resultSet.getString("username"));
-        user.setPassword(resultSet.getString("password")); // захешировано в БД
+        user.setPassword(resultSet.getString("password"));
         user.setFirstName(resultSet.getString("first_name"));
         user.setLastName(resultSet.getString("last_name"));
         user.setPhoneNumber(resultSet.getString("phone_number"));

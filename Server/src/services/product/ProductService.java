@@ -1,7 +1,7 @@
 package services.product;
 
 import dtos.product.*;
-import model.Product;
+import dtos.model.Product;
 
 import java.util.List;
 

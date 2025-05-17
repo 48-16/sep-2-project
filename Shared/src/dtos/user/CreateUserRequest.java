@@ -1,7 +1,7 @@
 package dtos.user;
 
 
-import model.User;
+import dtos.model.User;
 
 import java.io.Serializable;
 

@@ -1,5 +1,6 @@
 package ui.main;
 
+import dtos.auth.UserDataDto;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;

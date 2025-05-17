@@ -1,6 +1,6 @@
 package persistance.productDAO;
 
-import model.Product;
+import dtos.model.Product;
 
 import java.util.List;
 

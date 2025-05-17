@@ -2,7 +2,7 @@ package networking.requestHandler;
 
 import dtos.Response;
 import dtos.user.*;
-import model.User;
+import dtos.model.User;
 import services.user.UserService;
 
 public class UserRequestHandler implements RequestHandler {

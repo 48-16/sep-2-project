@@ -1,9 +1,11 @@
 package ClientNetworking;
 
+
+
 import dtos.Response;
+import dtos.model.User;
 import dtos.appointment.AppointmentRequest;
 import dtos.appointment.DeleteAppointmentRequest;
-import model.User;
 import ClientNetworking.appointment.appointmentClient;
 import ClientNetworking.authentication.authenticationClient;
 import ClientNetworking.communication.ClientCommunicationController;

@@ -1,7 +1,7 @@
 package persistance.appointmentDAO;
 
-import model.Appointment;
-import model.User;
+import dtos.model.Appointment;
+import dtos.model.User;
 import persistance.PostgresConnection;
 import persistance.userDAO.UserDAOImpl;
 

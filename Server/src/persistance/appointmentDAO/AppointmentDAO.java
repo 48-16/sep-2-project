@@ -1,6 +1,6 @@
 package persistance.appointmentDAO;
 
-import model.Appointment;
+import dtos.model.Appointment;
 
 import java.util.Date;
 import java.util.List;

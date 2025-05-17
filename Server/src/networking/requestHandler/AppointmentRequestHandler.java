@@ -4,7 +4,7 @@ import dtos.Response;
 import dtos.appointment.AppointmentRequest;
 import dtos.appointment.DeleteAppointmentRequest;
 import dtos.appointment.GetAppointmentsByDateRequest;
-import model.Appointment;
+import dtos.model.Appointment;
 import services.appointment.AppointmentService;
 
 import java.util.List;

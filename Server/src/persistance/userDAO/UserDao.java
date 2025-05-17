@@ -1,6 +1,6 @@
 package persistance.userDAO;
 
-import model.User;
+import dtos.model.User;
 
 public interface UserDao {
     public User getUserById(int id);

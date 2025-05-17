@@ -1,7 +1,7 @@
 package services.user;
 
 import dtos.user.*;
-import model.User;
+import dtos.model.User;
 import persistance.userDAO.UserDao;
 
 public class UserServiceImpl implements UserService {

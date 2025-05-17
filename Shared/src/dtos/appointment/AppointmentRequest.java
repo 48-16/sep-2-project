@@ -1,6 +1,6 @@
 package dtos.appointment;
 
-package model.User;
+import dtos.model.User;
 
 import java.io.Serializable;
 import java.sql.Date;
