@@ -1,4 +1,4 @@
-module Shared {
+module Server {
   exports dtos.appointment;
   exports dtos;
   exports utils;
