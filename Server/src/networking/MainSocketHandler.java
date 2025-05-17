@@ -19,13 +19,13 @@ public class MainSocketHandler implements Runnable {
     private final ObjectInputStream in;
     private final ObjectOutputStream out;
 
-
-
     public MainSocketHandler(Socket socket, ServiceProvider provider) throws IOException {
         this.socket = socket;
         this.out = new ObjectOutputStream(socket.getOutputStream());
         this.in = new ObjectInputStream(socket.getInputStream());
 
+        // Add authentication handler first to process login requests
+        handlers.add(new AuthRequestHandler(provider.getAuthenticationService()));
         handlers.add(new ProductRequestHandler(provider.getProductService()));
         handlers.add(new UserRequestHandler(provider.getUserService()));
         handlers.add(new RevenueRequestHandler(provider.getRevenueService()));
@@ -57,4 +57,6 @@ public class MainSocketHandler implements Runnable {
         }
         out.writeObject(new Response("error", "No handler found for request type: " + request.getClass().getSimpleName()));
     }
+
+
 }

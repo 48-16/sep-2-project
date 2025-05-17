@@ -25,7 +25,7 @@ public class mainViewUserModel {
   private final ObjectProperty<LocalDate> selectedDate = new SimpleObjectProperty<>();
   private final StringProperty selectedTimeSlot = new SimpleStringProperty();
   private final appointmentClient appointmentService;
-  private final UserDataDto currentUser;
+  private final User currentUser;
   private ErrorPopUp errorPopUp = new ErrorPopUp();
 
   private final Map<String, Boolean> timeSlotAvailability = new HashMap<>();
@@ -36,7 +36,7 @@ public class mainViewUserModel {
   };
 
   public mainViewUserModel(
-      appointmentClient appointmentService, UserDataDto currentUser) {
+      appointmentClient appointmentService, User currentUser) {
     this.appointmentService = appointmentService;
     this.currentUser = currentUser;
 

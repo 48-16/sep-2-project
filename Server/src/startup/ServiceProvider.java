@@ -10,6 +10,8 @@ import persistance.userDAO.UserDAOImpl;
 import persistance.userDAO.UserDao;
 import services.appointment.AppointmentService;
 import services.appointment.AppointmentServiceImpl;
+import services.auth.AuthenticationService;
+import services.auth.AuthenticationServiceImpl;
 import services.product.ProductService;
 import services.product.ProductServiceImpl;
 import services.revenue.RevenueService;
@@ -19,6 +21,9 @@ import services.user.UserServiceImpl;
 
 public class ServiceProvider {
 
+    public AuthenticationService getAuthenticationService() {
+        return new AuthenticationServiceImpl(getUserDao());
+    }
 
     public RevenueService getRevenueService() {
         return new RevenueServiceImpl(getRevenueDAO());
