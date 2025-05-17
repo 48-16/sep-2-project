@@ -1,6 +1,9 @@
 package ui.main;
 
+import dtos.appointment.AppointmentRequest;
 import dtos.auth.UserDataDto;
+import dtos.model.Appointment;
+import dtos.model.User;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -8,9 +11,15 @@ import javafx.beans.property.StringProperty;
 import ClientNetworking.appointment.appointmentClient;
 import utils.ErrorPopUp;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class mainViewUserModel {
   private final ObjectProperty<LocalDate> selectedDate = new SimpleObjectProperty<>();
@@ -44,16 +53,27 @@ public class mainViewUserModel {
 
   private void updateAvailableTimeSlots(LocalDate date) {
     try {
-      availableTimeSlotsResponse response = appointmentService.getAvailableTimeSlots(date);
-      boolean[] availableSlots = response.getAvailableSlots();
+      // Step 1: Get appointments for the day
+      List<Object> appointments =  appointmentService.getAppointmentsByDate(date);
 
+
+      // Step 2: Convert to booked times
+      Set<LocalTime> bookedSlots = appointments.stream()
+          .map(a -> a.getTime().toLocalTime())
+          .collect(Collectors.toSet());
+
+
+      // Step 3: Fill availability
       for (int i = 0; i < TIME_SLOTS.length; i++) {
-        timeSlotAvailability.put(TIME_SLOTS[i], availableSlots[i]);
+        LocalTime slot = TIME_SLOTS[i];
+        timeSlotAvailability.put(slot, !bookedSlots.contains(slot));
       }
+
     } catch (Exception e) {
-      errorPopUp.show("Error", "Failed to recive available time slots: " + e.getMessage());
+      errorPopUp.show("Error", "Failed to receive available time slots: " + e.getMessage());
     }
   }
+
 
   public boolean bookAppointment() {
     if (selectedDate.get() == null || selectedTimeSlot.get() == null || selectedTimeSlot.get().isEmpty()) {
@@ -62,26 +82,30 @@ public class mainViewUserModel {
     }
 
     try {
-      bookAppointmentRequest request = new bookAppointmentRequest(
-          currentUser.id(),
-          selectedDate.get(),
-          selectedTimeSlot.get()
+      Date sqlDate = Date.valueOf(selectedDate.get());
+      Time sqlTime = Time.valueOf(LocalTime.parse(selectedTimeSlot.get()));
+
+      // Convert UserDataDto -> User
+      User user = new User(currentUser.getId(), currentUser.getUserName(), currentUser.getFirstName(),currentUser.getLastName(),
+          currentUser.getEmail());
+
+      AppointmentRequest request = new AppointmentRequest(
+          0, sqlDate, sqlTime, user, user, 50.0
       );
 
-      appointmentDto result = appointmentService.bookAppointment(request);
-      if (result != null) {
-        errorPopUp.showSucces("Success", "Appointment booked successfully!");
-        updateAvailableTimeSlots(selectedDate.get());
-        return true;
-      } else {
-        errorPopUp.show("Error", "Failed to book appointment");
-        return false;
-      }
+      appointmentService.createAppointment(request);
+
+      errorPopUp.showSucces("Success", "Appointment booked successfully!");
+      updateAvailableTimeSlots(selectedDate.get());
+      return true;
+
     } catch (Exception e) {
       errorPopUp.show("Error", "Error booking appointment: " + e.getMessage());
       return false;
     }
   }
+
+
 
   public boolean isTimeSlotAvailable(String timeSlot) {
     return timeSlotAvailability.getOrDefault(timeSlot, false);
