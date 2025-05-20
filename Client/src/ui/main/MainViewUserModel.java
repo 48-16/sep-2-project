@@ -5,6 +5,7 @@ import dtos.apointment.AppointmentRequest;
 import dtos.apointment.GetAppointmentsByDateRequest;
 import dtos.product.GetAllProductsRequest;
 import dtos.product.ProductDto;
+import dtos.product.UpdateProductQuantityRequest;
 import dtos.revenue.AddRevenueRequest;
 import dtos.user.UserDataDto;
 import javafx.beans.property.ObjectProperty;
@@ -152,7 +153,7 @@ public class MainViewUserModel {
   }
 
   public boolean addProductToCart(ProductDto product) {
-    if (product.quantity() <= 0) {
+    if (product.getQuantity() <= 0) {
       errorPopUp.show("Error", "Product is out of stock");
       return false;
     }
@@ -172,8 +173,16 @@ public class MainViewUserModel {
 
       // Process each product in the cart
       for (ProductDto product : cart) {
-        totalRevenue += product.price();
-        // Here we would update product quantities, but we don't have the right DTO for that
+        totalRevenue += product.getPrice();
+
+        // Update product quantity
+        int newQuantity = product.getQuantity() - 1;
+        if (newQuantity < 0) {
+          errorPopUp.show("Error", "Product " + product.getProductName() + " is out of stock");
+          return false;
+        }
+
+        productClient.updateProductQuantity(new UpdateProductQuantityRequest(product.getId(), newQuantity));
       }
 
       // Add the revenue from this purchase

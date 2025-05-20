@@ -14,7 +14,7 @@ public class UserDAOImpl implements UserDao {
 
     @Override
     public User getUserById(int id) {
-        String query = "SELECT * FROM users WHERE id = ?";
+        String query = "SELECT * FROM person WHERE id = ?";
         try (Connection connection = PostgresConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -34,7 +34,7 @@ public class UserDAOImpl implements UserDao {
 
     @Override
     public User getUserByUsername(String username) {
-        String query = "SELECT * FROM users WHERE username = ?";
+        String query = "SELECT * FROM person WHERE username = ?";
         try (Connection connection = PostgresConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -54,38 +54,54 @@ public class UserDAOImpl implements UserDao {
 
     @Override
     public void createUser(User user) {
-        String query = "INSERT INTO users (username, password, first_name, last_name, phone_number, address, email, discount, user_type) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertPersonQuery = "INSERT INTO person (username, password, first_name, last_name, phone_number, address, email, discount, user_type) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id";
 
         try (Connection connection = PostgresConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement personStatement = connection.prepareStatement(insertPersonQuery)) {
 
-            statement.setString(1, user.getUserName());
-            statement.setString(2, hashPassword(user.getPassword()));
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getLastName());
-            statement.setString(5, user.getPhoneNumber());
-            statement.setString(6, user.getAddress());
-            statement.setString(7, user.getEmail());
-            statement.setDouble(8, user.getDiscount());
-            statement.setString(9, user.getUserType());
+            personStatement.setString(1, user.getUserName());
+            personStatement.setString(2, hashPassword(user.getPassword()));
+            personStatement.setString(3, user.getFirstName());
+            personStatement.setString(4, user.getLastName());
+            personStatement.setString(5, user.getPhoneNumber());
+            personStatement.setString(6, user.getAddress());
+            personStatement.setString(7, user.getEmail());
+            personStatement.setDouble(8, user.getDiscount());
+            personStatement.setString(9, user.getUserType());
 
-            statement.executeUpdate();
+            ResultSet rs = personStatement.executeQuery();
+            if (rs.next()) {
+                int personId = rs.getInt("id");
+
+                // Вставка в соответствующую подтаблицу
+                String userType = user.getUserType().toLowerCase();
+                String subtableQuery = "INSERT INTO " + userType + " (person_id) VALUES (?)";
+
+                try (PreparedStatement subtableStmt = connection.prepareStatement(subtableQuery)) {
+                    subtableStmt.setInt(1, personId);
+                    subtableStmt.executeUpdate();
+                }
+            }
 
         } catch (SQLException e) {
             System.err.println("Error creating user: " + e.getMessage());
+            throw new RuntimeException("User creation failed", e);
         }
     }
 
     @Override
     public void updateUser(User user) {
-        String query = "UPDATE users SET username = ?, password = ?, first_name = ?, last_name = ?, phone_number = ?, address = ?, email = ?, discount = ?, user_type = ? WHERE id = ?";
+        String query = "UPDATE person SET username = ?, password = ?, first_name = ?, last_name = ?, phone_number = ?, address = ?, email = ?, discount = ?, user_type = ? WHERE id = ?";
 
         try (Connection connection = PostgresConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, user.getUserName());
-            statement.setString(2, hashPassword(user.getPassword()));
+            String finalPassword = isHashed(user.getPassword())
+                    ? user.getPassword()
+                    : hashPassword(user.getPassword());
+            statement.setString(2, finalPassword);
             statement.setString(3, user.getFirstName());
             statement.setString(4, user.getLastName());
             statement.setString(5, user.getPhoneNumber());
@@ -104,7 +120,7 @@ public class UserDAOImpl implements UserDao {
 
     @Override
     public void deleteUser(int id) {
-        String query = "DELETE FROM users WHERE id = ?";
+        String query = "DELETE FROM person WHERE id = ?";
 
         try (Connection connection = PostgresConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -149,5 +165,9 @@ public class UserDAOImpl implements UserDao {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error hashing password", e);
         }
+    }
+
+    private boolean isHashed(String password) {
+        return password.matches("^[a-fA-F0-9]{64}$");
     }
 }

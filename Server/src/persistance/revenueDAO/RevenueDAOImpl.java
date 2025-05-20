@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class RevenueDAOImpl implements RevenueDAO {
 
     @Override
-    public int getRevenueTotal() {
+    public int getRevenueTotal() throws SQLException {
         String query = "SELECT total FROM revenue WHERE id = 1";
 
         try (Connection connection = PostgresConnection.getConnection();
@@ -20,40 +20,36 @@ public class RevenueDAOImpl implements RevenueDAO {
             if (resultSet.next()) {
                 return resultSet.getInt("total");
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException("Revenue record not found");
         }
-
-        return 0;
     }
 
     @Override
-    public void addToRevenue(int amount) {
+    public void addToRevenue(int amount) throws SQLException {
         String query = "UPDATE revenue SET total = total + ? WHERE id = 1";
 
         try (Connection conn = PostgresConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, amount);
-            stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Failed to update revenue: no rows affected");
+            }
         }
     }
 
     @Override
-    public void resetRevenue() {
+    public void resetRevenue() throws SQLException {
         String query = "UPDATE revenue SET total = 0 WHERE id = 1";
 
         try (Connection conn = PostgresConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Failed to reset revenue: no rows affected");
+            }
         }
     }
 }

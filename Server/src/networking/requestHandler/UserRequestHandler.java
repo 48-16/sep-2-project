@@ -1,5 +1,6 @@
 package networking.requestHandler;
 
+import dtos.ErrorResponse;
 import dtos.Response;
 import dtos.auth.CreateUserRequest;
 import dtos.user.*;
@@ -27,21 +28,23 @@ public class UserRequestHandler implements RequestHandler {
     public Object handle(Object request) {
         if (request instanceof CreateUserRequest createUserRequest) {
             userService.createUser(createUserRequest);
-            return new Response("user_created", null);
+            return Response.success("user_created");
         } else if (request instanceof UpdateUserRequest updateUserRequest) {
             userService.updateUser(updateUserRequest);
-            return new Response("user_updated", null);
+            return Response.success("user_updated");
         } else if (request instanceof DeleteUserRequest deleteUserRequest) {
             userService.deleteUser(deleteUserRequest);
-            return new Response("user_deleted", deleteUserRequest.id());
+            return Response.success("user_deleted: " + deleteUserRequest.id());
         } else if (request instanceof GetUserByIdRequest getUserByIdRequest) {
             User user = userService.getUserById(getUserByIdRequest);
-            return new Response("user", user);
+            UserDataDto userDataDto = new UserDataDto(user);
+            return Response.success(userDataDto);
         } else if (request instanceof GetUserByUsernameRequest getUserByUsernameRequest) {
             User user = userService.getUserByUsername(getUserByUsernameRequest);
-            return new Response("user", user);
+            UserDataDto userDataDto = new UserDataDto(user);
+            return Response.success(userDataDto);
         }
 
-        return new Response("error", "Unknown user request");
+        return Response.error("Unknown user request type: " + request.getClass().getSimpleName());
     }
 }

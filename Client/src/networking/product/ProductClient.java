@@ -10,4 +10,5 @@ public interface ProductClient {
     void deleteProduct(DeleteProductRequest request);
     ProductDto getProduct(GetProductRequest request);
     List<ProductDto> getAllProducts(GetAllProductsRequest request);
+    void updateProductQuantity(UpdateProductQuantityRequest request);
 }

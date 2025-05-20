@@ -12,7 +12,7 @@ import java.net.Socket;
 public class SocketService {
 
     private static final String HOST = "localhost";
-    private static final int PORT = 5000;
+    private static final int PORT = 8888;
 
     public static Object sendRequest(Request request) {
         try (

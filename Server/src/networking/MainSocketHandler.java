@@ -1,5 +1,6 @@
 package networking;
 
+import dtos.Request;
 import dtos.Response;
 import networking.requestHandler.*;
 import startup.ServiceProvider;
@@ -30,6 +31,7 @@ public class MainSocketHandler implements Runnable {
         handlers.add(new UserRequestHandler(provider.getUserService()));
         handlers.add(new RevenueRequestHandler(provider.getRevenueService()));
         handlers.add(new AppointmentRequestHandler(provider.getAppointmentService()));
+        handlers.add(new AuthenticationRequestHandler(provider.getUserService()));
     }
 
     @Override
@@ -39,9 +41,12 @@ public class MainSocketHandler implements Runnable {
                 Object request = in.readObject();
                 handleRequest(request);
             }
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Client disconnected or error: " + e.getMessage());
-        } finally {
+        }
+            catch (Exception e) {
+                System.out.println("Client disconnected or server error:");
+                e.printStackTrace();
+            }
+        finally {
             try {
                 socket.close();
             } catch (IOException ignored) {}
@@ -49,12 +54,17 @@ public class MainSocketHandler implements Runnable {
     }
 
     private void handleRequest(Object request) throws IOException {
+        if (!(request instanceof Request wrapper)) {
+            out.writeObject(Response.error("Invalid request format: expected Request object"));
+            return;
+        }
+
         for (RequestHandler handler : handlers) {
-            if (handler.canHandle(request)) {
-                out.writeObject(handler.handle(request));
+            if (handler.canHandle(wrapper.payload())) {
+                out.writeObject(handler.handle(wrapper.payload()));
                 return;
             }
         }
-        out.writeObject(new Response("error", "No handler found for request type: " + request.getClass().getSimpleName()));
+        out.writeObject(Response.error("No handler found for request type: " + wrapper.payload().getClass().getSimpleName()));
     }
 }

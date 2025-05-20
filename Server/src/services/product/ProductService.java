@@ -3,12 +3,14 @@ package services.product;
 import dtos.product.*;
 import model.Product;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface ProductService {
-    Product getProductById(GetProductRequest getProductRequest);
-    List<Product> getAllProducts(GetAllProductsRequest getAllProductsRequest);
-    void addProduct(AddProductRequest addProductRequest);
-    void updateProduct(UpdateProductRequest updateProductRequest);
-    void deleteProduct(DeleteProductRequest deleteProductRequest);
+    ProductDto getProductById(GetProductRequest getProductRequest) throws SQLException;
+    List<ProductDto> getAllProducts(GetAllProductsRequest getAllProductsRequest) throws SQLException;
+    void addProduct(AddProductRequest addProductRequest) throws SQLException;
+    void updateProduct(UpdateProductRequest updateProductRequest) throws SQLException;
+    void deleteProduct(DeleteProductRequest deleteProductRequest) throws SQLException;
+    void updateProductQuantity(UpdateProductQuantityRequest request) throws SQLException;
 }

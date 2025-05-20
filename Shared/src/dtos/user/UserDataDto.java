@@ -40,6 +40,20 @@ public class UserDataDto implements Serializable {
         this.userType = user.getUserType();
     }
 
+    public UserDataDto(int id, String userName, String firstName, String lastName,
+                       String phoneNumber, String address, String email,
+                       double discount, String userType) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.email = email;
+        this.discount = discount;
+        this.userType = userType;
+    }
+
     public int getId() {
         return id;
     }

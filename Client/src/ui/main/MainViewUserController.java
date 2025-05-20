@@ -1,6 +1,7 @@
 package ui.main;
 
 import dtos.product.ProductDto;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -66,7 +67,10 @@ public class MainViewUserController
 
   private void initializeProductTable() {
     productNameColumn.setCellValueFactory(cellData ->
-            new SimpleStringProperty(cellData.getValue().productName()));
+            new SimpleStringProperty(cellData.getValue().getProductName()));
+
+    priceColumn.setCellValueFactory(cellData ->
+            new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
 
     priceColumn.setCellFactory(column -> new TableCell<>() {
       @Override
@@ -81,11 +85,10 @@ public class MainViewUserController
     });
 
     quantityColumn.setCellValueFactory(cellData ->
-            new SimpleIntegerProperty(cellData.getValue().quantity()).asObject());
+            new SimpleIntegerProperty(cellData.getValue().getQuantity()).asObject());
 
     productTableView.setItems(products);
 
-    // Enable selection of rows
     productTableView.getSelectionModel().setCellSelectionEnabled(false);
     productTableView.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.SINGLE);
   }

@@ -13,7 +13,7 @@ import java.util.List;
 public class ProductDAOImpl implements ProductDAO {
 
     @Override
-    public Product getProductById(int id) {
+    public Product getProductById(int id) throws SQLException {
         String query = "SELECT * FROM barbershop_product WHERE id = ?";
         try (Connection connection = PostgresConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -24,15 +24,12 @@ public class ProductDAOImpl implements ProductDAO {
             if (resultSet.next()) {
                 return extractProductFromResultSet(resultSet);
             }
-
-        } catch (SQLException e) {
-            System.err.println("Error getting product by ID: " + e.getMessage());
+            throw new SQLException("Product not found with ID: " + id);
         }
-        return null;
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts() throws SQLException {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM barbershop_product";
 
@@ -43,15 +40,12 @@ public class ProductDAOImpl implements ProductDAO {
             while (resultSet.next()) {
                 products.add(extractProductFromResultSet(resultSet));
             }
-
-        } catch (SQLException e) {
-            System.err.println("Error getting all products: " + e.getMessage());
         }
         return products;
     }
 
     @Override
-    public void addProduct(Product product) {
+    public void addProduct(Product product) throws SQLException {
         String query = "INSERT INTO barbershop_product (product_name, price, quantity) VALUES (?, ?, ?)";
 
         try (Connection connection = PostgresConnection.getConnection();
@@ -61,15 +55,15 @@ public class ProductDAOImpl implements ProductDAO {
             statement.setDouble(2, product.getPrice());
             statement.setInt(3, product.getQuantity());
 
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            System.err.println("Error adding product: " + e.getMessage());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Failed to add product: no rows affected");
+            }
         }
     }
 
     @Override
-    public void updateProduct(Product product) {
+    public void updateProduct(Product product) throws SQLException {
         String query = "UPDATE barbershop_product SET product_name = ?, price = ?, quantity = ? WHERE id = ?";
 
         try (Connection connection = PostgresConnection.getConnection();
@@ -80,25 +74,25 @@ public class ProductDAOImpl implements ProductDAO {
             statement.setInt(3, product.getQuantity());
             statement.setInt(4, product.getId());
 
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            System.err.println("Error updating product: " + e.getMessage());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Failed to update product: no rows affected");
+            }
         }
     }
 
     @Override
-    public void deleteProduct(int id) {
+    public void deleteProduct(int id) throws SQLException {
         String query = "DELETE FROM barbershop_product WHERE id = ?";
 
         try (Connection connection = PostgresConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, id);
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            System.err.println("Error deleting product: " + e.getMessage());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Failed to delete product: no rows affected");
+            }
         }
     }
 

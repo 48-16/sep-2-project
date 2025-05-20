@@ -1,7 +1,9 @@
 package persistance.revenueDAO;
 
+import java.sql.SQLException;
+
 public interface RevenueDAO {
-    public int getRevenueTotal();
-    public void addToRevenue(int amount);
-    public void resetRevenue();
+    int getRevenueTotal() throws SQLException;
+    void addToRevenue(int amount) throws SQLException;
+    void resetRevenue() throws SQLException;
 }

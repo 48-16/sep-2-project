@@ -47,7 +47,7 @@ public class SignUpViewModel {
 
     private boolean isValidPassword(String password){
         if(password == null) return false;
-        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+        else return true;
     }
 
     public boolean registerUser(){
@@ -60,7 +60,7 @@ public class SignUpViewModel {
                     "",
                     "",
                     emailProperty.get(),
-                    "user"
+                    "client"
 
             );
             authClient.registerUser(request);

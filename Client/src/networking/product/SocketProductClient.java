@@ -32,4 +32,9 @@ public class SocketProductClient implements ProductClient{
     public List<ProductDto> getAllProducts(GetAllProductsRequest request) {
         return (List<ProductDto>) SocketService.sendRequest(new Request("product", "get_all", request));
     }
+
+    @Override
+    public void updateProductQuantity(UpdateProductQuantityRequest request) {
+        SocketService.sendRequest(new Request("product", "update_quantity", request));
+    }
 }
