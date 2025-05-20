@@ -1,32 +1,37 @@
 package ui.login;
 
-import startup.ViewHandler;
+
 import dtos.auth.LoginRequest;
+import dtos.user.GetUserByUsernameRequest;
+import dtos.user.UserDataDto;
+import networking.authentication.SocketAuthenticationClient;
+import networking.user.SocketUserClient;
+import startup.ViewHandler;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import networking.authentication.authenticationClient;
 import startup.ViewType;
+
 
 public class loginViewModel
 {
-  private final StringProperty emailProperty = new SimpleStringProperty();
+  private final StringProperty userNameProperty = new SimpleStringProperty();
   private final StringProperty passwordProperty = new SimpleStringProperty();
   private final BooleanProperty disableLoginButton = new SimpleBooleanProperty(true);
-  private final authenticationClient authService;
+  private final SocketAuthenticationClient authService;
 
-  public loginViewModel(authenticationClient authService)
+  public loginViewModel(SocketAuthenticationClient authService)
   {
     this.authService = authService;
-    emailProperty.addListener(this::changeLoginButtonState);
+    userNameProperty.addListener(this::changeLoginButtonState);
     passwordProperty.addListener(this::changeLoginButtonState);
   }
 
-  public StringProperty getEmailProperty()
+  public StringProperty getUserNameProperty()
   {
-    return emailProperty;
+    return userNameProperty;
   }
 
   public StringProperty getPasswordProperty()
@@ -42,7 +47,7 @@ public class loginViewModel
   public void changeLoginButtonState(Observable observable)
   {
     boolean disable =
-        emailProperty.get() == null || emailProperty.get().isEmpty()
+        userNameProperty.get() == null || userNameProperty.get().isEmpty()
             || passwordProperty.get() == null || passwordProperty.get()
             .isEmpty();
     disableLoginButton.set(disable);
@@ -50,12 +55,16 @@ public class loginViewModel
 
   public void login()
   {
-    LoginRequest loginRequest = new LoginRequest(emailProperty.get(),
+    LoginRequest loginRequest = new LoginRequest(userNameProperty.get(),
         passwordProperty.get());
     try
     {
-      UserDataDto user = authService.login(loginRequest);
-      if (user.admin())
+      authService.login(loginRequest);
+      GetUserByUsernameRequest userRequest = new GetUserByUsernameRequest(userNameProperty.get());
+      SocketUserClient userService = new SocketUserClient();
+      UserDataDto user = userService.getUserByUsername(userRequest);
+
+      if (user.getUserType().equals ("admin"))
       {
         ViewHandler.show(ViewType.ADMIN);
       }

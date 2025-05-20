@@ -1,10 +1,11 @@
 package ui.main;
 
+import dtos.user.UserDataDto;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import networking.apointment.appointmentClient;
+import networking.apointment.SocketAppointmentClient;
 import utils.ErrorPopUp;
 
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class mainViewUserModel {
   private final ObjectProperty<LocalDate> selectedDate = new SimpleObjectProperty<>();
   private final StringProperty selectedTimeSlot = new SimpleStringProperty();
-  private final appointmentClient appointmentService;
+  private final SocketAppointmentClient appointmentService;
   private final UserDataDto currentUser;
   private ErrorPopUp errorPopUp = new ErrorPopUp();
 
@@ -26,7 +27,7 @@ public class mainViewUserModel {
   };
 
   public mainViewUserModel(
-      appointmentClient apointmentService, UserDataDto currentUser) {
+      SocketAppointmentClient apointmentService, UserDataDto currentUser) {
     this.appointmentService = apointmentService;
     this.currentUser = currentUser;
 

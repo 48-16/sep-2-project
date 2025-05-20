@@ -1,6 +1,7 @@
 package networking.requestHandler;
 
 import dtos.Response;
+import dtos.auth.CreateUserRequest;
 import dtos.user.*;
 import model.User;
 import services.user.UserService;

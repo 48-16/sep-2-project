@@ -4,7 +4,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import networking.apointment.appointmentClient;
 import utils.ErrorPopUp;
 
 import java.time.LocalDate;

@@ -24,7 +24,7 @@ public class loginViewControler
 
   public void initialize()
   {
-    emailField.textProperty().bind(viewModel.getEmailProperty());
+    emailField.textProperty().bind(viewModel.getUserNameProperty());
     passwordField.textProperty().bind(viewModel.getPasswordProperty());
     loginButton.disableProperty().bind(viewModel.getDisableLoginButton());
   }

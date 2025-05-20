@@ -1,9 +1,6 @@
 package dtos.auth;
 
-public class LoginRequest //need to finish
-{
-  public LoginRequest(String s, String s1)
-  {
+import java.io.Serializable;
 
-  }
+public record LoginRequest (String email, String password) implements Serializable {
 }

@@ -3,7 +3,6 @@ package ui.register;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import networking.authentication.authenticationClient;
 import startup.ViewHandler;
 import startup.ViewType;
 

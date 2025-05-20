@@ -1,5 +1,6 @@
 package services.user;
 
+import dtos.auth.CreateUserRequest;
 import dtos.user.*;
 import model.User;
 

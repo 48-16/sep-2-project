@@ -3,7 +3,6 @@ package model;
 public class User {
 
     private int id;
-    private boolean isAdmin;
     private String userName;
     private String password;
     private String firstName;
