@@ -22,7 +22,7 @@ public class mainViewUserController
   @FXML private Button SixthHour;
   @FXML private Button SeventhHour;
   @FXML private Button EightHour;
-  @FXML private Button ConfirmBooking;
+  @FXML private Button ConfirmBookingButton;
   @FXML private DatePicker datePicker;
 
   private final mainViewUserModel viewModel;
@@ -33,7 +33,6 @@ public class mainViewUserController
   private static final String AVAILABLE_STYLE = "-fx-background-color: #4CAF50; -fx-text-fill: white;";
   private static final String UNAVAILABLE_STYLE = "-fx-background-color: #F44336; -fx-text-fill: white;";
   private static final String SELECTED_STYLE = "-fx-background-color: #2196F3; -fx-text-fill: white;";
-  private static final String DEFAULT_STYLE = "";
 
   public mainViewUserController(mainViewUserModel viewModel)
   {
@@ -62,7 +61,7 @@ public class mainViewUserController
       }
     });
 
-    ConfirmBooking.setDisable(true);
+    ConfirmBookingButton.setDisable(true);
   }
   public void addToCart(){}
 
@@ -92,7 +91,7 @@ public class mainViewUserController
   {
     selectedTimeSlot = null;
     viewModel.setSelectedTimeSlot(null);
-    ConfirmBooking.setDisable(true);
+    ConfirmBookingButton.setDisable(true);
 
     updateTimeSlotButtons();
   }
@@ -108,7 +107,7 @@ public class mainViewUserController
     selectedTimeSlot = timeSlot;
     viewModel.setSelectedTimeSlot(timeSlot);
     button.setStyle(SELECTED_STYLE);
-    ConfirmBooking.setDisable(false);
+    ConfirmBookingButton.setDisable(false);
   }
 
   @FXML public void choosefirstHour()

@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
 import startup.ViewHandler;
 import startup.ViewType;
 
-public class signUpViewController
+public class SignUpViewController
 {
   @FXML private TextField firstNameField;
 
@@ -19,10 +19,12 @@ public class signUpViewController
   @FXML private Button registerButton;
 
   @FXML private Button cancelButton;
-  private final signUpVIewModel viewModel;
+  private final SignUpViewModel viewModel;
+  private final ViewHandler viewHandler;
 
-  public signUpViewController(signUpVIewModel viewModel){
+  public SignUpViewController(SignUpViewModel viewModel, ViewHandler viewHandler){
     this.viewModel = viewModel;
+    this.viewHandler = viewHandler;
   }
 
   public  void initialize(){
@@ -35,12 +37,13 @@ public class signUpViewController
 
   @FXML private void register()
   {
-    viewModel.registerUser();
+    if(viewModel.registerUser()){
+    viewHandler.show(ViewType.LOGIN);}
   }
 
   @FXML private void cancel()
   {
-    //For now gonna leave it like this maybe latter gonna change to something better
+
     ViewHandler.show(ViewType.LOGIN);
   }
 

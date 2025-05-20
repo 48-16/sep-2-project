@@ -13,16 +13,18 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import startup.ViewType;
+import utils.ErrorPopUp;
 
 
-public class loginViewModel
+public class LoginViewModel
 {
   private final StringProperty userNameProperty = new SimpleStringProperty();
   private final StringProperty passwordProperty = new SimpleStringProperty();
   private final BooleanProperty disableLoginButton = new SimpleBooleanProperty(true);
   private final SocketAuthenticationClient authService;
+  private final ErrorPopUp errorPopUp = new ErrorPopUp();
 
-  public loginViewModel(SocketAuthenticationClient authService)
+  public LoginViewModel(SocketAuthenticationClient authService)
   {
     this.authService = authService;
     userNameProperty.addListener(this::changeLoginButtonState);
@@ -76,7 +78,7 @@ public class loginViewModel
     }
     catch (Exception e)
     {
-
+      errorPopUp.show("Error", "Failed to login: " + e.getMessage());
     }
   }
 }

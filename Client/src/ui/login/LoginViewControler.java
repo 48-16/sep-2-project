@@ -6,26 +6,26 @@ import javafx.scene.control.TextField;
 import startup.ViewHandler;
 import startup.ViewType;
 
-public class loginViewControler
+public class LoginViewControler
 {
 
   @FXML private TextField emailField;
   @FXML private TextField passwordField;
   @FXML private Button loginButton;
   @FXML private Button signupButton;
-  private final loginViewModel viewModel;
-  private final ViewHandler handler;
+  private final LoginViewModel viewModel;
+  private final ViewHandler viewHandler;
 
-  public loginViewControler(loginViewModel viewModel)
+  public LoginViewControler(LoginViewModel viewModel, ViewHandler viewHandler)
   {
     this.viewModel = viewModel;
-    handler = new ViewHandler();
+    this.viewHandler = viewHandler;
   }
 
   public void initialize()
   {
-    emailField.textProperty().bind(viewModel.getUserNameProperty());
-    passwordField.textProperty().bind(viewModel.getPasswordProperty());
+    emailField.textProperty().bindBidirectional(viewModel.getUserNameProperty());
+    passwordField.textProperty().bindBidirectional(viewModel.getPasswordProperty());
     loginButton.disableProperty().bind(viewModel.getDisableLoginButton());
   }
 
