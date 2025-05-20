@@ -4,7 +4,9 @@ import dtos.apointment.AppointmentRequest;
 import dtos.apointment.DeleteAppointmentRequest;
 import dtos.apointment.GetAppointmentsByDateRequest;
 import model.Appointment;
+import model.User;
 import persistance.appointmentDAO.AppointmentDAO;
+import persistance.userDAO.UserDAOImpl;
 
 import java.util.Date;
 import java.util.List;
@@ -21,8 +23,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = new Appointment( appointmentRequest.id(),
                                                     appointmentRequest.date(),
                                                     appointmentRequest.time(),
-                                                    appointmentRequest.barber(),
-                                                    appointmentRequest.client(),
+                                                    null,
+                                                    new UserDAOImpl().getUserById( appointmentRequest.id()),
                                                     appointmentRequest.price());
         appointmentDAO.createAppointment(appointment);
     }

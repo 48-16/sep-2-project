@@ -71,10 +71,10 @@ public class SignUpViewModel {
             return false;
         }
     }
-    public StringProperty FirstNameProp() {
+    public StringProperty firstNameProp() {
         return firstNameProperty;
     }
-    public StringProperty getLastNameProp() {
+    public StringProperty lastNameProp() {
         return lastNameProperty;
     }
     public StringProperty emailProp() {

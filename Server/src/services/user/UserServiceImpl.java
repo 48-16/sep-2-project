@@ -24,12 +24,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(CreateUserRequest request) {
-        userDao.createUser(request.user());
+
     }
 
     @Override
     public void updateUser(UpdateUserRequest request) {
-        userDao.updateUser(request.user());
+
+    }
+
+
+    public void createUser(UserDataDto request) {
+        User user = new User(request.getId(),request.getUserName(),request.getPassword(), request.getFirstName(), request.getLastName(), request.getPhoneNumber(), request.getAddress(), request.getEmail(), request.getDiscount(), request.getUserType());
+        userDao.createUser(user);
+    }
+
+
+    public void updateUser(UserDataDto request) {
+
+        User user = new User(request.getId(),request.getUserName(),request.getPassword(), request.getFirstName(), request.getLastName(), request.getPhoneNumber(), request.getAddress(), request.getEmail(), request.getDiscount(), request.getUserType());
+        userDao.createUser(user);
     }
 
     @Override

@@ -9,40 +9,89 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.mainViewUserController">
-   <children>
-      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-            <Tab text="Shop">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView prefHeight="330.0" prefWidth="600.0">
-                          <columns>
-                            <TableColumn prefWidth="376.0" text="Name" />
-                            <TableColumn minWidth="0.0" prefWidth="105.0" text="Quanity in cart" />
-                          </columns>
-                        </TableView>
-                        <Button fx:id="submitPurchaseButton" layoutX="415.0" layoutY="332.0" mnemonicParsing="false" onAction="#ConfirmPurchase" text="Submit" />
-                        <Button fx:id="addToCartButton" layoutX="242.0" layoutY="332.0" mnemonicParsing="false" onAction="#addToCart" text="Add to cart" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-          <Tab text="Barbershop">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <DatePicker fx:id="datePicker" layoutX="41.0" layoutY="171.0" prefHeight="29.0" prefWidth="164.0" />
-                        <Label layoutX="34.0" layoutY="147.0" text="Choose Date for your apointment" />
-                        <Button fx:id="ConfirmBooking" layoutX="476.0" layoutY="297.0" mnemonicParsing="false" onAction="#confirmBooking" prefHeight="47.0" prefWidth="97.0" text="Book Time" />
-                        <ListView layoutX="314.0" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-   </children>
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.MainViewUserController">
+    <children>
+        <TabPane prefHeight="500.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Shop">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                    <children>
+                                        <Label text="Available Products" styleClass="section-header">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Label>
+
+                                        <TableView fx:id="productTableView" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn fx:id="productNameColumn" prefWidth="450.0" text="Product Name" />
+                                                <TableColumn fx:id="priceColumn" prefWidth="100.0" text="Price" />
+                                                <TableColumn fx:id="quantityColumn" prefWidth="100.0" text="Quantity" />
+                                            </columns>
+                                        </TableView>
+
+                                        <HBox spacing="20" alignment="CENTER_RIGHT">
+                                            <children>
+                                                <Button fx:id="addToCartButton" mnemonicParsing="false" onAction="#addToCart" text="Add to Cart" prefWidth="150" />
+                                                <Button fx:id="submitPurchaseButton" mnemonicParsing="false" onAction="#confirmPurchase" text="Complete Purchase" prefWidth="150" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Barbershop">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox spacing="20" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                    <children>
+                                        <Label text="Book Your Appointment" styleClass="section-header">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Label>
+
+                                        <HBox spacing="30">
+                                            <children>
+                                                <VBox spacing="10" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="1. Select Date" />
+                                                        <DatePicker fx:id="datePicker" prefWidth="300.0" />
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="10" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="2. Select Available Time Slot" />
+                                                        <ListView fx:id="timeSlotListView" prefHeight="200.0" prefWidth="300.0" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+
+                                        <HBox alignment="CENTER_RIGHT">
+                                            <children>
+                                                <Button fx:id="confirmBookingButton" mnemonicParsing="false" onAction="#confirmBooking" prefHeight="40.0" prefWidth="200.0" text="Confirm Booking" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </AnchorPane>
