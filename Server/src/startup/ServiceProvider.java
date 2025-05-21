@@ -1,5 +1,6 @@
 package startup;
 
+import networking.requestHandler.*;
 import persistance.appointmentDAO.AppointmentDAO;
 import persistance.appointmentDAO.AppointmentDAOImpl;
 import persistance.productDAO.ProductDAO;
@@ -17,8 +18,27 @@ import services.revenue.RevenueServiceImpl;
 import services.user.UserService;
 import services.user.UserServiceImpl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ServiceProvider {
 
+    private final Map<String, RequestHandler> handlerMap;
+
+    public ServiceProvider() {
+        handlerMap = new HashMap<>();
+
+        // Регистрация всех хендлеров по ключу
+        handlerMap.put("auth", new AuthenticationRequestHandler(getUserService()));
+        handlerMap.put("user", new UserRequestHandler(getUserService()));
+        handlerMap.put("product", new ProductRequestHandler(getProductService()));
+        handlerMap.put("appointment", new AppointmentRequestHandler(getAppointmentService()));
+        handlerMap.put("revenue", new RevenueRequestHandler(getRevenueService()));
+    }
+
+    public RequestHandler getHandler(String handlerName) {
+        return handlerMap.get(handlerName.toLowerCase());
+    }
 
     public RevenueService getRevenueService() {
         return new RevenueServiceImpl(getRevenueDAO());
@@ -27,7 +47,6 @@ public class ServiceProvider {
     private RevenueDAO getRevenueDAO() {
         return new RevenueDAOImpl();
     }
-
 
     public ProductService getProductService() {
         return new ProductServiceImpl(getProductDAO());

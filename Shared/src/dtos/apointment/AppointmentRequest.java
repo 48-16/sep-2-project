@@ -1,7 +1,6 @@
 package dtos.apointment;
 
 import dtos.user.UserDataDto;
-import model.User;
 
 import java.io.Serializable;
 import java.sql.Date;

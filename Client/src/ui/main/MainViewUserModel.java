@@ -43,8 +43,8 @@ public class MainViewUserModel {
   private final Map<String, Boolean> timeSlotAvailability = new HashMap<>();
 
   private static final String[] TIME_SLOTS = {
-          "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00",
-          "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00"
+          "8:00", "9:00", "10:00", "11:00",
+          "12:00", "13:00", "14:00", "15:00"
   };
 
   public MainViewUserModel(
@@ -98,7 +98,7 @@ public class MainViewUserModel {
     int hour = localTime.getHour();
 
     if (hour >= 8 && hour < 16) {
-      return String.format("%d:00-%d:00", hour, hour + 1);
+      return String.format("%d:00", hour);
     }
     return null;
   }
@@ -110,27 +110,27 @@ public class MainViewUserModel {
     }
 
     try {
-      String[] timeParts = selectedTimeSlot.get().split("-");
-      if (timeParts.length != 2) {
-        errorPopUp.show("Error", "Invalid time slot format");
-        return false;
-      }
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
-      LocalTime localTime = LocalTime.parse(timeParts[0], formatter);
-      Time time = Time.valueOf(localTime.toString());
+      LocalTime localTime = LocalTime.parse(selectedTimeSlot.get(), formatter);
+      Time time = Time.valueOf(localTime.withSecond(0));
 
       // Create a new appointment request
-      // Note: The AppointmentRequest constructor doesn't match what we need
-      // We'd need to adapt this based on the actual server implementation
       AppointmentRequest request = new AppointmentRequest(
               0, // ID will be assigned by server
               Date.valueOf(selectedDate.get()),
               time,
               null, // barber - server should assign a barber
-              null, // client - server should use current user info
+              new UserDataDto(currentUser.getId(), currentUser.getUserName(), currentUser.getPassword(), currentUser.getFirstName(), currentUser.getLastName(), currentUser.getPhoneNumber(), currentUser.getAddress(), currentUser.getEmail(), currentUser.getDiscount(), currentUser.getUserType()), // client - use current user
               50.0  // default price
       );
+
+      System.out.println("Booking appointment:");
+      System.out.println("Date: " + request.date());
+      System.out.println("Time: " + request.time());
+      System.out.println("Client: " + request.client());
+      System.out.println("Client ID: " + request.client().getId());
+      System.out.println("User type: " + request.client().getUserType());
 
       // Send the request to book the appointment
       appointmentClient.createAppointment(request);
@@ -138,6 +138,7 @@ public class MainViewUserModel {
       updateAvailableTimeSlots(selectedDate.get());
       return true;
     } catch (Exception e) {
+      e.printStackTrace();
       errorPopUp.show("Error", "Error booking appointment: " + e.getMessage());
       return false;
     }
