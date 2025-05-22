@@ -3,9 +3,7 @@ package ui.main;
 import dtos.apointment.AppointmentDto;
 import dtos.apointment.AppointmentRequest;
 import dtos.apointment.GetAppointmentsByDateRequest;
-import dtos.product.GetAllProductsRequest;
-import dtos.product.ProductDto;
-import dtos.product.UpdateProductQuantityRequest;
+import dtos.product.*;
 import dtos.revenue.AddRevenueRequest;
 import dtos.user.UserDataDto;
 import javafx.beans.property.ObjectProperty;
@@ -16,7 +14,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.apointment.AppointmentClient;
 import networking.product.ProductClient;
+import networking.productCart.ProductCartClient;
+import networking.productCart.SocketProductCartClient;
 import networking.revenue.RevenueClient;
+import networking.user.UserClient;
 import utils.ErrorPopUp;
 
 
@@ -35,8 +36,10 @@ public class MainViewUserModel {
   private final StringProperty selectedTimeSlot = new SimpleStringProperty();
   private final AppointmentClient appointmentClient;
   private final ProductClient productClient;
+  private final ProductCartClient productCartClient;
   private final RevenueClient revenueClient;
   private final UserDataDto currentUser;
+  private final ProductCartDto productCartDto;
   private final ErrorPopUp errorPopUp = new ErrorPopUp();
   private final ObservableList<ProductDto> cart = FXCollections.observableArrayList();
 
@@ -56,6 +59,8 @@ public class MainViewUserModel {
     this.productClient = productClient;
     this.revenueClient = revenueClient;
     this.currentUser = currentUser;
+    this.productCartDto = new ProductCartDto(currentUser);
+    this.productCartClient = new SocketProductCartClient();
 
     for (String slot : TIME_SLOTS) {
       timeSlotAvailability.put(slot, true);
@@ -114,6 +119,7 @@ public class MainViewUserModel {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
       LocalTime localTime = LocalTime.parse(selectedTimeSlot.get(), formatter);
       Time time = Time.valueOf(localTime.withSecond(0));
+      revenueClient.addRevenue(new AddRevenueRequest(50));
 
       // Create a new appointment request
       AppointmentRequest request = new AppointmentRequest(
@@ -189,7 +195,14 @@ public class MainViewUserModel {
       // Add the revenue from this purchase
       revenueClient.addRevenue(new AddRevenueRequest((int)totalRevenue));
 
-      // Clear the cart
+      List<ProductDto> productDtos = new ArrayList<>();
+      for (ProductDto product : cart) {
+        productDtos.add(product);
+      }
+      productCartDto.setProducts(productDtos);
+      productCartDto.setTotalPrice((int) totalRevenue);
+      productCartClient.createProductCart(new ProductCartDtoRequest(productCartDto));
+
       cart.clear();
       return true;
     } catch (Exception e) {

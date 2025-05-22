@@ -14,6 +14,8 @@ import ui.login.LoginViewControler;
 import ui.login.LoginViewModel;
 import ui.main.MainViewUserController;
 import ui.main.MainViewUserModel;
+import ui.main.MainAdminViewController;
+import ui.main.MainViewAdminModel;
 import ui.register.SignUpViewController;
 import ui.register.SignUpViewModel;
 import utils.ErrorPopUp;
@@ -65,11 +67,20 @@ public class ViewHandler {
     try {
       Parent root = null;
       switch (viewType) {
-        case LOGIN -> root = loadLoginView();
-        case REGISTER -> root = loadRegisterView();
-        case USER -> root = loadUserView();
-        case ADMIN -> root = loadAdminView();
-        default -> throw new IllegalArgumentException("Unknown view: " + viewType);
+        case LOGIN:
+          root = loadLoginView();
+          break;
+        case REGISTER:
+          root = loadRegisterView();
+          break;
+        case USER:
+          root = loadUserView();
+          break;
+        case ADMIN:
+          root = loadAdminView();
+          break;
+        default:
+          throw new IllegalArgumentException("Unknown view: " + viewType);
       }
 
       if (currentScene == null) {
@@ -126,7 +137,29 @@ public class ViewHandler {
   }
 
   private Parent loadAdminView() throws IOException {
-    // Admin view not implemented yet, using user view for now
-    return loadUserView();
+    UserDataDto currentUser = AppState.getCurrentUser();
+    if (currentUser == null) {
+      errorPopUp.show("Error", "You must be logged in to access this view");
+      openView(ViewType.LOGIN);
+      throw new IOException("User not logged in");
+    }
+
+    if (!"admin".equals(currentUser.getUserType())) {
+      errorPopUp.show("Error", "You do not have permission to access the admin view");
+      openView(ViewType.USER);
+      throw new IOException("User is not an admin");
+    }
+
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/main/mainAdminViewFXML.fxml"));
+
+    AppointmentClient appointmentClient = serviceFactory.getAppointmentClient();
+    ProductClient productClient = serviceFactory.getProductClient();
+
+    MainViewAdminModel viewModel = new MainViewAdminModel(
+            appointmentClient,
+            productClient
+    );
+    loader.setControllerFactory(param -> new MainAdminViewController(viewModel));
+    return loader.load();
   }
 }
