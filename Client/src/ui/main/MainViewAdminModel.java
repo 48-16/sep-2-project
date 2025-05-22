@@ -2,8 +2,7 @@ package ui.main;
 
 import dtos.apointment.AppointmentDto;
 import dtos.apointment.GetAppointmentsByDateRequest;
-import dtos.product.GetAllProductsRequest;
-import dtos.product.ProductDto;
+import dtos.product.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -53,6 +52,56 @@ public class MainViewAdminModel {
         });
     }
 
+    // Product management methods
+    public boolean addProduct(AddProductRequest request) {
+        try {
+            productClient.addProduct(request);
+            return true;
+        } catch (Exception e) {
+            errorPopUp.show("Error", "Failed to add product: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updateProduct(UpdateProductRequest request) {
+        try {
+            productClient.updateProduct(request);
+            return true;
+        } catch (Exception e) {
+            errorPopUp.show("Error", "Failed to update product: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deleteProduct(DeleteProductRequest request) {
+        try {
+            productClient.deleteProduct(request);
+            return true;
+        } catch (Exception e) {
+            errorPopUp.show("Error", "Failed to delete product: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public List<ProductDto> getAllProducts() {
+        try {
+            return productClient.getAllProducts(new GetAllProductsRequest());
+        } catch (Exception e) {
+            errorPopUp.show("Error", "Failed to get products: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public ProductDto getProduct(int productId) {
+        try {
+            return productClient.getProduct(new GetProductRequest(productId));
+        } catch (Exception e) {
+            errorPopUp.show("Error", "Failed to get product: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // Appointment management methods
     private void updateAvailableTimeSlots(LocalDate date) {
         try {
             // Reset all slots to available first
@@ -164,15 +213,7 @@ public class MainViewAdminModel {
         }
     }
 
-    public List<ProductDto> getAllProducts() {
-        try {
-            return productClient.getAllProducts(new GetAllProductsRequest());
-        } catch (Exception e) {
-            errorPopUp.show("Error", "Failed to get products: " + e.getMessage());
-            return new ArrayList<>();
-        }
-    }
-
+    // Getters and setters
     public boolean isTimeSlotAvailable(String timeSlot) {
         return timeSlotAvailability.getOrDefault(timeSlot, true);
     }
